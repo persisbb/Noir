@@ -1,0 +1,278 @@
+
+{% extends "chat/source.html" %}
+
+{% block sources_content %}
+<section class="sources-page">
+    <div class="eyebrow">
+        <span></span> DOCUMENT INTELLIGENCE
+    </div>
+
+    <h1 class="sources-title">
+        Your <em>documents.</em>
+    </h1>
+
+    <p class="intro">
+        Upload a PDF and transform its contents into
+        searchable knowledge.
+    </p>
+
+    <div class="sources-divider"></div>
+
+    <div class="library-heading">
+        <span>ADD TO KNOWLEDGE BASE</span>
+        <span>PDF DOCUMENTS</span>
+    </div>
+
+    <form
+        method="post"
+        enctype="multipart/form-data"
+        style="margin-top: 28px;"
+    >
+        {% csrf_token %}
+
+        <div style="
+            border: 1px dashed #B69A70;
+            border-radius: 12px;
+            padding: 48px 24px;
+            text-align: center;
+        ">
+            <div style="
+                font-size: 34px;
+                color: #B69A70;
+                margin-bottom: 16px;
+            ">◇</div>
+
+            <h2 style="margin-bottom: 12px;">
+                Upload your document
+            </h2>
+
+            <p style="margin-bottom: 24px;">
+                Select a PDF file, up to 10 MB.
+            </p>
+
+            {{ form.document }}
+
+            {% for error in form.document.errors %}
+                <p style="color: #E8A09A; margin-top: 12px;">
+                    {{ error }}
+                </p>
+            {% endfor %}
+
+            <div style="margin-top: 28px;">
+                <button type="submit" style="
+                    background: #B69A70;
+                    color: #0A0A0A;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 13px 32px;
+                    font-family: Manrope, sans-serif;
+                    font-weight: 700;
+                    cursor: pointer;
+                ">
+                    Process document →
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {% if error %}
+        <p style="color: #E8A09A; margin-top: 24px;">
+            {{ error }}
+        </p>
+    {% endif %}
+
+    {% if uploaded_document %}
+        <div style="
+            border: 1px solid #B69A70;
+            border-radius: 12px;
+            padding: 28px;
+            margin-top: 28px;
+        ">
+            <div class="eyebrow">
+                <span></span> DOCUMENT INDEXED
+            </div>
+
+            <h2>{{ uploaded_document.filename }}</h2>
+
+            <p style="margin-top: 12px;">
+                {{ uploaded_document.chunk_count }}
+                searchable chunks created successfully.
+            </p>
+
+            <p style="margin-top: 12px; overflow-wrap: anywhere;">
+                Document ID:
+                {{ uploaded_document.document_id }}
+            </p>
+        </div>
+
+<div style="margin-top: 32px;">
+    <div class="eyebrow">
+        <span></span> ASK YOUR DOCUMENT
+    </div>
+
+    <h2 style="margin: 18px 0;">
+        Explore what your document knows.
+    </h2>
+
+    <form id="document-question-form"
+          data-url="{% url 'ask_document' %}"
+          style="margin-top: 24px;">
+
+        {% csrf_token %}
+
+        <input type="hidden"
+               name="document_id"
+               value="{{ uploaded_document.document_id }}">
+
+        <textarea
+            name="question"
+            id="document-question"
+            placeholder="Ask anything about this document..."
+            required
+            rows="3"
+            style="
+                width: 100%;
+                box-sizing: border-box;
+                background: #141414;
+                color: #F0EDE6;
+                border: 1px solid #343434;
+                border-radius: 10px;
+                padding: 18px;
+                font-family: Manrope, sans-serif;
+                font-size: 14px;
+                resize: vertical;
+            "
+        ></textarea>
+
+        <button type="submit"
+                id="document-ask-button"
+                style="
+                    margin-top: 16px;
+                    background: #B69A70;
+                    color: #0A0A0A;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 13px 28px;
+                    font-family: Manrope, sans-serif;
+                    font-weight: 700;
+                    cursor: pointer;
+                ">
+            Ask NOIR →
+        </button>
+    </form>
+
+    <div id="document-answer"
+         role="status"
+         aria-live="polite"
+         style="
+             display: none;
+             margin-top: 28px;
+             padding: 24px;
+             border: 1px solid #343434;
+             border-radius: 10px;
+             white-space: normal;
+             overflow-wrap: anywhere;
+             line-height: 1.8;
+         "></div>
+</div>
+
+    {% endif %}
+</section>
+
+<style>
+    #document-answer p {
+        margin: 0 0 12px;
+        line-height: 1.7;
+    }
+
+    #document-answer ul,
+    #document-answer ol {
+        margin: 8px 0 16px;
+        padding-left: 24px;
+    }
+
+    #document-answer li {
+        margin-bottom: 8px;
+        line-height: 1.7;
+    }
+
+    #document-answer h2,
+    #document-answer h3,
+    #document-answer h4 {
+        margin: 20px 0 10px;
+        line-height: 1.4;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@16.4.1/lib/marked.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("document-question-form");
+
+    if (!form) return;
+
+    const answerBox = document.getElementById("document-answer");
+    const button = document.getElementById("document-ask-button");
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        button.disabled = true;
+        button.textContent = "Thinking...";
+        answerBox.style.display = "block";
+        answerBox.textContent = "Searching your document...";
+
+        try {
+            const response = await fetch(form.dataset.url, {
+                method: "POST",
+                body: new FormData(form),
+                credentials: "same-origin"
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error || "Unable to answer your question."
+                );
+            }
+
+            let output = data.answer || "No answer was generated.";
+
+            if (data.sources && data.sources.length > 0) {
+                output += "\n\n**RETRIEVED SOURCES**\n\n";
+
+                data.sources.forEach((source, index) => {
+                    output +=
+                        "- [Source " + (index + 1) + "] " +
+                        source.source +
+                        " — Page " +
+                        (source.page ?? "Unknown") +
+                        "\n";
+                });
+            }
+
+            // Convert Markdown to HTML, then sanitize it before displaying.
+            if (window.marked && window.DOMPurify) {
+                const renderedHtml = marked.parse(output);
+                answerBox.innerHTML = DOMPurify.sanitize(renderedHtml);
+            } else {
+                // Safe fallback if the libraries fail to load.
+                answerBox.textContent = output;
+            }
+
+        } catch (error) {
+            answerBox.textContent = error.message;
+
+        } finally {
+            button.disabled = false;
+            button.textContent = "Ask NOIR →";
+        }
+    });
+});
+
+
+</script>
+
+{% endblock %}

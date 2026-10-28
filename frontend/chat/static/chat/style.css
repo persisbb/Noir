@@ -1,0 +1,1113 @@
+
+:root {
+    --black: #0a0a0a;
+    --panel: #101010;
+    --surface: #151515;
+    --ivory: #f0ede6;
+    --muted: #898780;
+    --champagne: #b69a70;
+    --border: #292929;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--black);
+    color: var(--ivory);
+    font-family: "Manrope", sans-serif;
+    font-size: 13px;
+}
+
+button, textarea { font: inherit; }
+button { color: inherit; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+.app-shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+    width: 248px;
+    flex-shrink: 0;
+    padding: 32px 20px 18px;
+    background: #0d0d0d;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.brand { display: flex; flex-direction: column; align-items: flex-start; margin: 0 0 42px 5px; }
+.brand-script {
+    font-family: "Italianno", cursive;
+    font-size: 57px;
+    line-height: .9;
+    color: var(--ivory);
+    letter-spacing: .3px;
+}
+.brand-caption { margin-top: 10px; font-size: 8px; letter-spacing: 2px; color: var(--champagne); }
+
+.new-chat {
+    background: var(--ivory);
+    color: #171613;
+    border: 0;
+    padding: 13px;
+    border-radius: 7px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+}
+.new-chat span { margin-right: 9px; font-size: 17px; vertical-align: -1px; }
+
+.nav-label {
+    margin: 36px 0 13px 9px;
+    font-size: 9px;
+    letter-spacing: 1.8px;
+    color: #77756e;
+}
+.nav-item {
+    padding: 12px 10px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    color: #aaa8a1;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition: background .2s, color .2s;
+}
+.nav-item > span { width: 16px; text-align: center; font-size: 16px; }
+.nav-item:hover, .nav-item.active { background: #1a1917; color: var(--ivory); }
+.nav-item.active { box-shadow: inset 2px 0 var(--champagne); }
+
+.sidebar-bottom {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding: 20px 2px 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #8eaa88; }
+.status-title, .status-subtitle { margin: 0; }
+.status-title { font-size: 11px; }
+.status-subtitle { margin-top: 4px; font-size: 10px; color: var(--muted); }
+.status-mark { margin-left: auto; font-size: 8px; color: #8eaa88; }
+
+.main-panel { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.topbar {
+    height: 68px;
+    padding: 0 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #202020;
+}
+.breadcrumb { color: #aaa8a1; font-size: 11px; }
+.breadcrumb span { margin: 0 9px; color: #55534e; }
+.topbar-right { display: flex; align-items: center; gap: 19px; }
+.private-label { color: #929087; font-size: 8px; letter-spacing: 1.2px; }
+.private-label span { color: #8eaa88; margin-right: 6px; }
+.avatar {
+    width: 30px; height: 30px; border: 1px solid #38352f; border-radius: 50%;
+    display: grid; place-items: center; color: var(--champagne); font-family: "Italianno", cursive; font-size: 23px;
+}
+
+.chat-area {
+    flex: 1;
+    width: min(100%, 860px);
+    margin: 0 auto;
+    padding: 58px 36px 22px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 68px);
+}
+.welcome { margin: auto 0; padding-bottom: 35px; }
+.eyebrow { display: flex; align-items: center; gap: 9px; color: var(--champagne); font-size: 9px; letter-spacing: 2px; }
+.eyebrow span { width: 18px; height: 1px; background: var(--champagne); }
+h1 { margin: 27px 0 17px; font-size: clamp(46px, 6vw, 70px); line-height: 1.08; font-weight: 400; letter-spacing: -3.5px; }
+h1 em { font-family: "Italianno", cursive; color: var(--champagne); font-size: 1.35em; font-weight: 400; letter-spacing: 0; }
+.intro { color: #a5a299; font-size: 12px; line-height: 2; }
+.suggestion-heading { margin: 42px 0 13px; display: flex; justify-content: space-between; color: #77756e; font-size: 9px; letter-spacing: 1.5px; }
+.suggestion-heading span { color: var(--champagne); }
+.suggestions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.suggestion {
+    min-height: 118px;
+    padding: 15px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #101010;
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    text-align: left;
+    transition: border-color .2s, background .2s, transform .2s;
+}
+.suggestion:hover { border-color: #6c5a40; background: #151411; transform: translateY(-2px); }
+.suggestion-icon { color: var(--champagne); font-size: 17px; }
+.suggestion strong, .suggestion small { display: block; }
+.suggestion strong { font-size: 10px; line-height: 1.6; font-weight: 600; }
+.suggestion small { margin-top: 8px; color: #8e8b83; font-size: 10px; line-height: 1.6; }
+.arrow { margin-left: auto; color: #716b60; font-size: 11px; }
+
+.composer-wrap { margin-top: auto; }
+.composer {
+    border: 1px solid #35332e;
+    border-radius: 10px;
+    padding: 16px 16px 12px;
+    background: #141414;
+    transition: border-color .2s;
+}
+.composer:focus-within { border-color: #786347; }
+textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 34px;
+    max-height: 160px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--ivory);
+    font-size: 12px;
+    line-height: 1.8;
+}
+textarea::placeholder { color: #77756e; }
+.composer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; }
+.composer-hint { font-size: 9px; color: #88857d; }
+.composer-hint span { color: var(--champagne); margin-right: 5px; }
+.send-button {
+    width: 32px; height: 32px; border: 0; border-radius: 6px;
+    background: var(--champagne); color: #17130e; font-size: 21px;
+    transition: background .2s, transform .2s;
+}
+.send-button:hover { background: #d0b38a; transform: translateY(-1px); }
+.disclaimer { margin: 11px 0 0; text-align: center; color: #69675f; font-size: 9px; }
+
+.messages { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; }
+.message { max-width: 85%; padding: 15px 17px; border-radius: 9px; font-size: 12px; line-height: 1.8; }
+.user-message { align-self: flex-end; background: #211e19; border: 1px solid #383025; }
+.assistant-message { align-self: flex-start; background: #121212; border: 1px solid var(--border); color: #c3c0b8; }
+[hidden] { display: none !important; }
+
+@media (max-width: 760px) {
+    .sidebar { width: 74px; padding: 25px 10px 15px; align-items: center; }
+    .brand { margin: 0 0 38px; align-items: center; }
+    .brand-script { font-size: 42px; }
+    .brand-caption, .new-chat, .nav-label, .nav-item:not(.active), .sidebar-bottom > div, .status-mark { display: none; }
+    .nav-item.active { width: 48px; justify-content: center; font-size: 0; }
+    .nav-item.active span { font-size: 18px; }
+    .sidebar-bottom { justify-content: center; width: 100%; }
+    .topbar { padding: 0 18px; }
+    .private-label { display: none; }
+    .chat-area { padding: 35px 18px 18px; }
+    .suggestions { grid-template-columns: 1fr; }
+    .suggestion { min-height: 76px; }
+    .suggestion small { margin-top: 3px; }
+    h1 { letter-spacing: -2px; }
+}
+
+.source-list {
+    margin-top: 18px;
+    padding-top: 13px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+}
+
+.source-heading {
+    width: 100%;
+    margin: 0 0 3px;
+    color: var(--champagne);
+    font-size: 9px;
+    letter-spacing: 1.6px;
+}
+
+.source-chip {
+    display: inline-block;
+    padding: 6px 9px;
+    border: 1px solid #38332a;
+    border-radius: 5px;
+    color: #c4b69e;
+    background: #191713;
+    font-size: 10px;
+    overflow-wrap: anywhere;
+}
+
+.send-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+
+
+/* ========================================
+   NOIR — LUXURY FINISH
+   Stage 1: Visual refinement
+======================================== */
+
+:root {
+    --noir-black: #0A0A0A;
+    --noir-surface: #121212;
+    --noir-elevated: #191816;
+    --noir-ivory: #F0EDE6;
+    --noir-muted: #A5A097;
+    --noir-champagne: #B69A70;
+    --noir-border: rgba(182, 154, 112, 0.20);
+}
+
+/* Smoother, more deliberate interactions */
+button,
+textarea,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+/* Refined message typography */
+.message {
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    animation: noir-appear 280ms ease both;
+}
+
+.user-message {
+    letter-spacing: -0.015em;
+}
+
+.assistant-message {
+    letter-spacing: -0.012em;
+}
+
+/* Elegant source chips */
+.source-chip {
+    transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease;
+}
+
+.source-chip:hover {
+    border-color: var(--noir-champagne);
+    background-color: rgba(182, 154, 112, 0.08);
+}
+
+/* Subtle composer focus */
+.composer:focus-within {
+    border-color: rgba(182, 154, 112, 0.55);
+    box-shadow: 0 0 0 3px rgba(182, 154, 112, 0.045);
+}
+
+/* Restrained champagne send-button hover */
+.send-button:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+/* Clear keyboard focus for accessibility */
+button:focus-visible,
+a:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--noir-champagne);
+    outline-offset: 3px;
+}
+
+/* Gentle entrance for new messages */
+@keyframes noir-appear {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* ========================================
+   NOIR — STAGE 2
+   Premium Layout Refinement
+======================================== */
+
+/* Sidebar */
+.sidebar {
+    width: 272px;
+    padding: 38px 24px 24px;
+    background: #0D0D0D;
+}
+
+.brand {
+    margin-bottom: 52px;
+}
+
+.brand-script {
+    font-size: 65px;
+}
+
+.brand-caption {
+    letter-spacing: 2.5px;
+}
+
+/* New conversation */
+.new-chat {
+    padding: 15px 17px;
+    border-radius: 9px;
+}
+
+.new-chat:hover {
+    background: #D9C8AF;
+    transform: translateY(-1px);
+}
+
+/* Navigation */
+.nav-item {
+    border-radius: 8px;
+    padding: 13px 12px;
+}
+
+.nav-item:hover {
+    background: #1C1A17;
+}
+
+/* Top navigation */
+.topbar {
+    height: 76px;
+    padding: 0 44px;
+}
+
+/* Main content */
+.chat-area {
+    width: min(100%, 940px);
+    min-height: calc(100vh - 76px);
+    padding: 65px 44px 28px;
+}
+
+/* Welcome screen */
+.welcome {
+    padding-bottom: 48px;
+}
+
+.eyebrow {
+    letter-spacing: 2.6px;
+    font-size: 10px;
+}
+
+h1 {
+    font-size: clamp(50px, 5.5vw, 78px);
+    line-height: 1.08;
+    letter-spacing: -3px;
+}
+
+.intro {
+    font-size: 13px;
+    line-height: 2;
+    max-width: 560px;
+}
+
+/* Suggestion cards */
+.suggestion-heading {
+    margin-top: 48px;
+    margin-bottom: 16px;
+}
+
+.suggestions {
+    gap: 14px;
+}
+
+.suggestion {
+    min-height: 135px;
+    padding: 20px 17px;
+    border-radius: 11px;
+    background: #111110;
+}
+
+.suggestion:hover {
+    border-color: #79664B;
+    background: #191713;
+    transform: translateY(-3px);
+}
+
+.suggestion strong {
+    font-size: 11px;
+}
+
+.suggestion small {
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+/* Chat composer */
+.composer {
+    padding: 19px 20px 14px;
+    border-radius: 13px;
+    background: #151515;
+}
+
+textarea {
+    font-size: 13px;
+    resize: none;
+}
+
+.send-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+}
+
+/* Chat messages */
+.messages {
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.message {
+    padding: 20px 22px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.assistant-message {
+    background: #131313;
+    border-color: #2B2925;
+}
+
+.user-message {
+    background: #211E19;
+    border-color: #403629;
+}
+
+/* Source citations */
+.source-list {
+    margin-top: 22px;
+    padding-top: 17px;
+    gap: 9px;
+}
+
+.source-chip {
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 11px;
+}
+
+/* Responsive layout */
+@media (max-width: 760px) {
+    .sidebar {
+        width: 74px;
+        padding: 25px 10px 15px;
+    }
+
+    .brand {
+        margin-bottom: 38px;
+    }
+
+    .brand-script {
+        font-size: 42px;
+    }
+
+    .topbar {
+        height: 68px;
+        padding: 0 18px;
+    }
+
+    .chat-area {
+        min-height: calc(100vh - 68px);
+        padding: 35px 18px 18px;
+    }
+
+    .suggestions {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .suggestion {
+        min-height: 76px;
+        padding: 15px 12px;
+    }
+
+    h1 {
+        font-size: clamp(40px, 8vw, 58px);
+        letter-spacing: -2px;
+    }
+
+    .message {
+        max-width: 95%;
+        padding: 15px 17px;
+    }
+}
+
+
+/* ========================================
+   NOIR — STAGE 3
+   Layout & Proportion Refinement
+======================================== */
+
+/* Keep the workspace balanced */
+.chat-area {
+    padding-top: 42px;
+    padding-bottom: 24px;
+}
+
+/* Reduce excessive vertical spacing */
+.welcome {
+    padding-bottom: 24px;
+}
+
+h1 {
+    margin-top: 22px;
+    margin-bottom: 14px;
+}
+
+.suggestion-heading {
+    margin-top: 34px;
+}
+
+/* Compact editorial-style suggestion cards */
+.suggestion {
+    min-height: 112px;
+    padding: 17px 16px;
+}
+
+/* Refine the composer */
+.composer {
+    padding: 16px 19px 12px;
+}
+
+/* More balanced spacing between messages */
+.messages {
+    gap: 16px;
+}
+
+/* Improve shorter laptop screens */
+@media (max-height: 800px) and (min-width: 761px) {
+    .chat-area {
+        padding-top: 25px;
+        padding-bottom: 16px;
+    }
+
+    .welcome {
+        padding-bottom: 12px;
+    }
+
+    h1 {
+        font-size: clamp(46px, 5vw, 65px);
+    }
+
+    .suggestion-heading {
+        margin-top: 22px;
+    }
+
+    .suggestion {
+        min-height: 95px;
+    }
+}
+
+/* Preserve mobile proportions */
+@media (max-width: 760px) {
+    .chat-area {
+        padding: 28px 18px 18px;
+    }
+
+    .suggestion {
+        min-height: 76px;
+    }
+}
+
+
+/* Remove the inner textarea highlight */
+.composer textarea,
+.composer textarea:focus,
+.composer textarea:focus-visible {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+
+/* ========================================
+   NOIR — STAGE 4
+   Chat Answer Actions
+======================================== */
+
+.message-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid #292724;
+}
+
+.copy-answer {
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: #99958C;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.copy-answer:hover {
+    color: #B69A70;
+    background: rgba(182, 154, 112, 0.08);
+}
+
+.copy-answer.copied {
+    color: #B69A70;
+}
+
+
+
+/* ========================================
+   NOIR — STAGE 5
+   Knowledge Sources Page
+======================================== */
+
+.sources-page {
+    width: min(100%, 1000px);
+    margin: 0 auto;
+    padding: 85px 48px;
+}
+
+.sources-title {
+    margin-top: 26px;
+}
+
+.sources-title em {
+    font-family: "Italianno", cursive;
+    font-weight: 400;
+    color: var(--champagne);
+    font-size: 1.3em;
+}
+
+.sources-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 65px 0 30px;
+}
+
+.library-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1.8px;
+}
+
+.library-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 28px;
+    background: #121212;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 180ms ease;
+}
+
+.library-card:hover {
+    border-color: #756044;
+}
+
+.library-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid #453A2C;
+    border-radius: 9px;
+    color: var(--champagne);
+    font-size: 25px;
+}
+
+.library-details {
+    flex: 1;
+}
+
+.library-details h2 {
+    margin: 2px 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.library-details p {
+    margin: 0;
+    color: #99958C;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.library-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 22px;
+}
+
+.library-tags span {
+    padding: 7px 10px;
+    border: 1px solid #38332A;
+    border-radius: 5px;
+    color: var(--champagne);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.library-arrow {
+    color: var(--champagne);
+    font-size: 17px;
+}
+
+.library-note {
+    margin-top: 20px;
+    color: #77736B;
+    font-size: 11px;
+}
+
+@media (max-width: 760px) {
+    .sources-page {
+        padding: 45px 20px;
+    }
+
+    .sources-divider {
+        margin: 38px 0 24px;
+    }
+
+    .library-card {
+        padding: 18px;
+        gap: 14px;
+    }
+
+    .library-icon {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+
+
+/* ========================================
+   NOIR — STAGE 6
+   Live Pinecone Statistics
+======================================== */
+
+.index-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.index-stat {
+    min-width: 0;
+    padding: 24px 20px;
+    background: #121212;
+    border: 1px solid #292929;
+    border-radius: 10px;
+}
+
+.stat-label {
+    display: block;
+    margin-bottom: 16px;
+    color: #898780;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
+
+.index-stat strong {
+    display: block;
+    color: #F0EDE6;
+    font-size: 22px;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.index-stat:hover {
+    border-color: #756044;
+    transition: border-color 180ms ease;
+}
+
+@media (max-width: 900px) {
+    .index-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .index-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+/* ========================================
+   NOIR — STAGE 7
+   Document Explorer
+======================================== */
+
+.library-card {
+    color: inherit;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 42px;
+    color: #A5A097;
+    font-size: 12px;
+}
+
+.back-link:hover {
+    color: #B69A70;
+}
+
+.chunk-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 44px;
+}
+
+.chunk-card {
+    display: block;
+    padding: 25px 28px;
+    background: #121212;
+    border: 1px solid #292929;
+    border-radius: 11px;
+    transition: border-color 180ms ease,
+                transform 180ms ease;
+}
+
+.chunk-card:hover {
+    border-color: #B69A70;
+    transform: translateY(-2px);
+}
+
+.chunk-card-top {
+    display: flex;
+    justify-content: space-between;
+    color: #F0EDE6;
+    font-size: 14px;
+}
+
+.chunk-card-top span {
+    color: #B69A70;
+}
+
+.chunk-card p {
+    margin: 14px 0;
+    color: #A5A097;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.chunk-card-footer {
+    color: #B69A70;
+    font-size: 9px;
+    letter-spacing: 1.6px;
+}
+
+.chunk-detail-card {
+    margin-top: 28px;
+    padding: 30px;
+    background: #121212;
+    border: 1px solid #292929;
+    border-radius: 12px;
+}
+
+.detail-label {
+    margin-bottom: 18px;
+    color: #B69A70;
+    font-size: 10px;
+    letter-spacing: 1.6px;
+}
+
+.chunk-full-text {
+    color: #D2CEC6;
+    font-size: 13px;
+    line-height: 2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.vector-id {
+    margin-bottom: 32px;
+    color: #F0EDE6;
+    overflow-wrap: anywhere;
+}
+
+.metadata-list {
+    display: grid;
+    gap: 12px;
+}
+
+.metadata-row {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #292929;
+    overflow-wrap: anywhere;
+}
+
+.metadata-row span:first-child {
+    color: #B69A70;
+}
+
+.metadata-row span:last-child {
+    color: #C3C0B8;
+}
+
+@media (max-width: 760px) {
+    .chunk-card,
+    .chunk-detail-card {
+        padding: 18px;
+    }
+
+    .metadata-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+}
+
+
+
+/* ========================================
+   NOIR — STAGE 8
+   Evaluation Dashboard
+======================================== */
+
+.evaluation-page .evaluation-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    padding: 10px 15px;
+    border: 1px solid #38332A;
+    border-radius: 6px;
+    background: #191713;
+    color: #B69A70;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+}
+
+.evaluation-page .evaluation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.evaluation-page .evaluation-card {
+    padding: 30px;
+    background: #121212;
+    border: 1px solid #292929;
+    border-radius: 12px;
+    transition: border-color 180ms ease;
+}
+
+.evaluation-page .evaluation-card:hover {
+    border-color: #756044;
+}
+
+.evaluation-page .evaluation-card strong {
+    display: block;
+    margin: 12px 0;
+    color: #F0EDE6;
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: -1px;
+}
+
+.evaluation-page .evaluation-card p {
+    margin: 0;
+    color: #A5A097;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.evaluation-page .evaluation-checks {
+    display: grid;
+    gap: 12px;
+}
+
+.evaluation-page .evaluation-check {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 25px;
+    background: #121212;
+    border: 1px solid #292929;
+    border-radius: 9px;
+    color: #D2CEC6;
+    font-size: 13px;
+}
+
+.evaluation-page .evaluation-check strong {
+    color: #B69A70;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+}
+
+.evaluation-page .evaluation-limitations {
+    padding: 25px 30px;
+    background: #121212;
+    border: 1px solid #292929;
+    border-radius: 11px;
+}
+
+.evaluation-page .evaluation-limitations p {
+    margin: 0 0 15px;
+    color: #A5A097;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.evaluation-page .evaluation-limitations p:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+    .evaluation-page .evaluation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evaluation-page .evaluation-card {
+        padding: 22px;
+    }
+
+    .evaluation-page .evaluation-check {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .evaluation-page .evaluation-check strong {
+        white-space: normal;
+    }
+}

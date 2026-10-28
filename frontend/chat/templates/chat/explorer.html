@@ -1,0 +1,50 @@
+
+{% extends "chat/source.html" %}
+
+{% block sources_content %}
+<section class="sources-page">
+    <a class="back-link" href="{% url 'sources' %}">
+        ← Back to sources
+    </a>
+
+    <div class="eyebrow">
+        <span></span> DOCUMENT EXPLORER
+    </div>
+
+    <h1 class="sources-title">
+        Indexed <em>knowledge.</em>
+    </h1>
+
+    <p class="intro">
+        Explore the chunks stored in your knowledge base.
+    </p>
+
+    {% if error %}
+        <p class="library-note">{{ error }}</p>
+    {% elif chunks %}
+        <div class="chunk-list">
+            {% for chunk in chunks %}
+                <a
+                    class="chunk-card"
+                    href="{% url 'source_detail' chunk.id %}"
+                >
+                    <div class="chunk-card-top">
+                        <strong>Chunk {{ chunk.chunk_id }}</strong>
+                        <span>↗</span>
+                    </div>
+
+                    <p>{{ chunk.preview }}</p>
+
+                    <span class="chunk-card-footer">
+                        VIEW DETAILS →
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="library-note">
+            No chunks were found in the selected namespace.
+        </p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,130 @@
+
+{% extends "chat/source.html" %}
+
+{% block sources_content %}
+<section class="sources-page evaluation-page">
+
+    <div class="eyebrow">
+        <span></span> SYSTEM EVALUATION
+    </div>
+
+    <h1 class="sources-title">
+        Measured <em>intelligence.</em>
+    </h1>
+
+    <p class="intro">
+        A closer look at retrieval quality, answer validation,
+        and evidence-grounded responses.
+    </p>
+
+    {% if error %}
+        <p class="library-note">{{ error }}</p>
+
+    {% elif results %}
+
+        <div class="evaluation-status">
+            <span class="status-dot"></span>
+            HISTORICAL EVALUATION SNAPSHOT
+        </div>
+
+        <div class="evaluation-grid">
+
+            <article class="evaluation-card">
+                <span class="stat-label">MEAN RECALL@3</span>
+                <strong>
+                    {{ results.retrieval.mean_recall_at_3|floatformat:3 }}
+                </strong>
+                <p>Relevant retrieval across the test set</p>
+            </article>
+
+            <article class="evaluation-card">
+                <span class="stat-label">MEAN RECIPROCAL RANK</span>
+                <strong>
+                    {{ results.retrieval.mrr|floatformat:3 }}
+                </strong>
+                <p>Ranking quality of retrieved evidence</p>
+            </article>
+
+            <article class="evaluation-card">
+                <span class="stat-label">HIT RATE@1</span>
+                <strong>
+                    {{ results.retrieval.hit_rate_at_1|floatformat:3 }}
+                </strong>
+                <p>Top-result retrieval performance</p>
+            </article>
+
+            <article class="evaluation-card">
+                <span class="stat-label">QUESTIONS EVALUATED</span>
+                <strong>{{ results.retrieval.questions_total }}</strong>
+                <p>
+                    {{ results.retrieval.in_scope_questions }} in scope /
+                    {{ results.retrieval.out_of_scope_questions }} out of scope
+                </p>
+            </article>
+
+        </div>
+
+        <div class="sources-divider"></div>
+
+        <div class="library-heading">
+            <span>VALIDATION RESULTS</span>
+            <span>RECORDED TEST OUTCOMES</span>
+        </div>
+
+        <div class="evaluation-checks">
+
+            <div class="evaluation-check">
+                <span>Answer evaluation</span>
+                <strong>
+                    {{ results.answer_evaluation.passed }}/{{ results.answer_evaluation.total }}
+                    PASSED
+                </strong>
+            </div>
+
+            <div class="evaluation-check">
+                <span>LLM-judged groundedness</span>
+                <strong>
+                    {{ results.llm_groundedness.passed }}/{{ results.llm_groundedness.total }}
+                    PASSED
+                </strong>
+            </div>
+
+            <div class="evaluation-check">
+                <span>Retrieval evidence checks</span>
+                <strong>
+                    {{ results.evidence_checks.passed }}/{{ results.evidence_checks.total }}
+                    PASSED
+                </strong>
+            </div>
+
+            <div class="evaluation-check">
+                <span>Out-of-scope rejection</span>
+                <strong>
+                    {{ results.retrieval.out_of_scope_rejections_passed }}/{{ results.retrieval.out_of_scope_rejections_total }}
+                    PASSED
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="sources-divider"></div>
+
+        <div class="library-heading">
+            <span>EVALUATION LIMITATIONS</span>
+        </div>
+
+        <div class="evaluation-limitations">
+            {% for limitation in results.limitations %}
+                <p>{{ limitation }}</p>
+            {% endfor %}
+        </div>
+
+        <p class="library-note">
+            These metrics are from previous evaluation runs.
+            Viewing this dashboard does not execute new tests.
+        </p>
+
+    {% endif %}
+
+</section>
+{% endblock %}

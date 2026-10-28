@@ -1,0 +1,50 @@
+
+{% extends "chat/source.html" %}
+
+{% block title %}Chunk Details — NOIR{% endblock %}
+
+{% block sources_content %}
+<section class="sources-page">
+    <a class="back-link" href="{% url 'source_explorer' %}">
+        ← All chunks
+    </a>
+
+    <div class="eyebrow">
+        <span></span> SOURCE DETAIL
+    </div>
+
+    <h1 class="sources-title">
+        Chunk <em>{{ chunk.chunk_id }}</em>
+    </h1>
+
+    <p class="intro">
+        Retrieved directly from your Pinecone knowledge base.
+    </p>
+
+    <article class="chunk-detail-card">
+        <div class="detail-label">STORED TEXT</div>
+
+        <div class="chunk-full-text">
+            {{ chunk.text }}
+        </div>
+    </article>
+
+    <article class="chunk-detail-card">
+        <div class="detail-label">VECTOR ID</div>
+        <p class="vector-id">{{ chunk.id }}</p>
+
+        <div class="detail-label">METADATA</div>
+
+        <div class="metadata-list">
+            {% for key, value in chunk.metadata.items %}
+                <div class="metadata-row">
+                    <span>{{ key }}</span>
+                    <span>{{ value }}</span>
+                </div>
+            {% empty %}
+                <p>No metadata available.</p>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+{% endblock %}
