@@ -29,15 +29,18 @@ from chat.views import (
     ask_document
 )
 
+from django.contrib.auth.decorators import login_required
+from django.urls import include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", home, name="home"),
-    path("ask/", ask, name="ask"),
-    path("sources/", sources, name="sources"),
-    path("sources/explore/", source_explorer, name="source_explorer"),
-    path("sources/chunk/<str:vector_id>/", source_detail, name="source_detail"),
-    path("evaluations/", evaluations, name="evaluations"),
-    path("documents/", documents, name="documents"),
-    path("documents/ask/", ask_document, name="ask_document"),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("", login_required(home), name="home"),
+    path("ask/", login_required(ask), name="ask"),
+    path("sources/", login_required(sources), name="sources"),
+    path("sources/explore/", login_required(source_explorer), name="source_explorer"),
+    path("sources/chunk/<str:vector_id>/", login_required(source_detail), name="source_detail"),
+    path("evaluations/", login_required(evaluations), name="evaluations"),
+    path("documents/", login_required(documents), name="documents"),
+    path("documents/ask/", login_required(ask_document), name="ask_document"),
 ]
