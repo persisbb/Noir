@@ -15,14 +15,18 @@ INDEX_NAME = "production-rag"
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index = pc.Index(INDEX_NAME)
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+from functools import lru_cache
+
+
+@lru_cache(maxsize=1)
+def get_embeddings():
+    return HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    )
 
 
 def create_retriever():
-    return index, embeddings
-
+    return index, get_embeddings()
 
 def search(query, top_k=3):
     index, embeddings = create_retriever()
