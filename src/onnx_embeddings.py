@@ -31,8 +31,14 @@ def load_model():
     tokenizer.enable_truncation(max_length=256)
     tokenizer.enable_padding()
 
+    session_options = ort.SessionOptions()
+    session_options.intra_op_num_threads = 1
+    session_options.inter_op_num_threads = 1
+    session_options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+
     session = ort.InferenceSession(
         model_path,
+        sess_options=session_options,
         providers=["CPUExecutionProvider"],
     )
 
