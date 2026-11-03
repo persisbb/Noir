@@ -3,14 +3,12 @@ import os
 
 from dotenv import load_dotenv
 from pinecone import Pinecone
-from langchain_huggingface import HuggingFaceEmbeddings
-
-
+from src.onnx_embeddings import embed_texts
 load_dotenv()
 
 INDEX_NAME = "production-rag"
 NAMESPACE = "user-documents"
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+
 
 
 def retrieve_pdf_chunks(question, top_k=3, document_id=None):
@@ -21,11 +19,8 @@ def retrieve_pdf_chunks(question, top_k=3, document_id=None):
     if not api_key:
         raise ValueError("PINECONE_API_KEY is missing from .env")
 
-    embeddings = HuggingFaceEmbeddings(
-        model_name=MODEL_NAME
-    )
-
-    question_vector = embeddings.embed_query(question)
+    # Generate the query embedding using lightweight ONNX
+    question_vector = embed_texts([question])[0]
 
     pc = Pinecone(api_key=api_key)
     index = pc.Index(INDEX_NAME)

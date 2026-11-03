@@ -1,11 +1,9 @@
 
-from langchain_huggingface import HuggingFaceEmbeddings
-
+from src.onnx_embeddings import embed_texts
 from src.pdf_ingest import extract_pdf_text, create_pdf_chunks
 from uuid import uuid4
 from pathlib import Path
 
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 
 def prepare_pdf_vectors(pdf_path):
@@ -19,11 +17,8 @@ def prepare_pdf_vectors(pdf_path):
             "No extractable text found in the PDF."
         )
 
-    embeddings = HuggingFaceEmbeddings(
-        model_name=MODEL_NAME
-    )
-
-    vectors = embeddings.embed_documents(
+    # Generate embeddings using lightweight ONNX
+    vectors = embed_texts(
         [chunk["text"] for chunk in chunks]
     )
 

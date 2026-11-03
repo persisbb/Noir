@@ -30,3 +30,7 @@ uploads/
 
 
 frontend/staticfiles/
+
+.model_cache/
+
+.venv-prod/

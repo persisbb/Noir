@@ -2,8 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from pinecone import Pinecone
-from langchain_huggingface import HuggingFaceEmbeddings
-
+from src.onnx_embeddings import embed_texts
 load_dotenv()
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
@@ -15,27 +14,20 @@ INDEX_NAME = "production-rag"
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index = pc.Index(INDEX_NAME)
 
-from functools import lru_cache
 
-
-@lru_cache(maxsize=1)
-def get_embeddings():
-    return HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
 
 
 def create_retriever():
-    return index, get_embeddings()
+    return index
 
 def search(query, top_k=3):
-    index, embeddings = create_retriever()
+    pinecone_index = create_retriever()
 
-    # Convert user question into a vector
-    query_vector = embeddings.embed_query(query)
+    # Generate the query embedding using lightweight ONNX
+    query_vector = embed_texts([query])[0]
 
     # Search Pinecone
-    results = index.query(
+    results = pinecone_index.query(
     vector=query_vector,
     top_k=top_k,
     include_metadata=True,
@@ -126,7 +118,7 @@ if __name__ == "__main__":
 
         # Query Pinecone directly so we can inspect scores
         # before the existing 0.30 threshold filters results.
-        query_vector = embeddings.embed_query(question)
+        query_vector = embed_texts([question])[0]
 
         raw_results = index.query(
             vector=query_vector,
