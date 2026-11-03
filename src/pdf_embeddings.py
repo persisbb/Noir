@@ -17,10 +17,16 @@ def prepare_pdf_vectors(pdf_path):
             "No extractable text found in the PDF."
         )
 
-    # Generate embeddings using lightweight ONNX
-    vectors = embed_texts(
-        [chunk["text"] for chunk in chunks]
-    )
+    # Process PDF chunks in small batches to reduce peak memory.
+    BATCH_SIZE = 4
+    vectors = []
+
+    for start in range(0, len(chunks), BATCH_SIZE):
+        batch = chunks[start:start + BATCH_SIZE]
+        batch_vectors = embed_texts(
+            [chunk["text"] for chunk in batch]
+        )
+        vectors.extend(batch_vectors)
 
     records = []
 
