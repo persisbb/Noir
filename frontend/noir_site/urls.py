@@ -35,7 +35,7 @@ from django.urls import include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("", login_required(home), name="home"),
+    path("", home, name="home"),
     path("ask/", login_required(ask), name="ask"),
     path("sources/", login_required(sources), name="sources"),
     path("sources/explore/", login_required(source_explorer), name="source_explorer"),
@@ -44,3 +44,4 @@ urlpatterns = [
     path("documents/", login_required(documents), name="documents"),
     path("documents/ask/", login_required(ask_document), name="ask_document"),
 ]
+
